@@ -1,0 +1,2 @@
+include ':app', ':customcalendarlibrary'
+rootProject.name='MyLibraryProjects'
