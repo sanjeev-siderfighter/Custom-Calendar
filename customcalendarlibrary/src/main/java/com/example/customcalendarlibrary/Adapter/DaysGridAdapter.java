@@ -53,24 +53,25 @@ public class DaysGridAdapter extends BaseAdapter {
 
         if (convertView == null) {
 
-            Holder holder = new Holder();
+            //Holder holder = new Holder();
 
-//            binding = DataBindingUtil.inflate(inflater, R.layout.days_grid_items, null, false);
-//            convertView = binding.getRoot();
+            binding = DataBindingUtil.inflate(inflater, R.layout.days_grid_items, null, false);
+            binding.dayText.setText(daysList.get(position));
+            convertView = binding.getRoot();
 
-//            holder.dayText = binding.dayText;
+            //holder.dayText = binding.dayText;
+
+
+//            convertView = inflater.inflate(R.layout.days_grid_items, null);
+//            holder.dayText = convertView.findViewById(R.id.day_text);
 //            holder.dayText.setText(daysList.get(position));
-
-            convertView = inflater.inflate(R.layout.days_grid_items, null);
-            holder.dayText = convertView.findViewById(R.id.day_text);
-            holder.dayText.setText(daysList.get(position));
         }
 
         return convertView;
     }
 
-    private class Holder {
+    /*private class Holder {
 
         TextView dayText;
-    }
+    }*/
 }

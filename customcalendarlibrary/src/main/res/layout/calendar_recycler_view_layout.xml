@@ -26,13 +26,15 @@
             app:layout_constraintBottom_toBottomOf="@id/month_text"
             />
 
-        <!--<GridView-->
-        <com.example.customcalendarlibrary.WrappedGridView
+<!--        <com.example.customcalendarlibrary.WrappedGridView-->
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/dates_grid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:numColumns="7"
             app:layout_constraintTop_toBottomOf="@id/month_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

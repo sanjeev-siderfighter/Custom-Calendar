@@ -2,19 +2,19 @@ package com.example.customcalendarlibrary.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.customcalendarlibrary.WrappedGridView;
 import com.example.customcalendarlibrary.R;
+import com.example.customcalendarlibrary.Util.CalendarDates;
 import com.example.customcalendarlibrary.Util.Toaster;
 import com.example.customcalendarlibrary.databinding.CalendarRecyclerViewLayoutBinding;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class CalendarRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -22,23 +22,47 @@ public class CalendarRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
     private CalendarRecyclerViewLayoutBinding binding;
     private Context mContext;
 
-    private List<String> monthList, yearList;
+    private List<String> yearList;
+    private List<CalendarDates> monthList;
 
     private static class CalendarViewHolder extends RecyclerView.ViewHolder {
 
-        TextView monthText, yearText;
-//        GridView datesGrid;
-        WrappedGridView datesGrid;
+        public CalendarRecyclerViewLayoutBinding binding;
 
-        CalendarViewHolder(@NonNull View itemView) {
-            super(itemView);
-            monthText = itemView.findViewById(R.id.month_text);
-            yearText = itemView.findViewById(R.id.year_text);
-            datesGrid = itemView.findViewById(R.id.dates_grid);
+        CalendarViewHolder(@NonNull CalendarRecyclerViewLayoutBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
+
+        public void setDatesGridAdapter(CalendarDates month, String year) {
+
+            binding.monthText.setText(month.getMonthName());
+            binding.yearText.setText(year);
+
+            binding.datesGrid.setHasFixedSize(false);
+            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(binding.getRoot().getContext(), 7);
+            binding.datesGrid.setLayoutManager(layoutManager);
+            DatesGridAdapter adapter = new DatesGridAdapter(binding.getRoot().getContext(), month, year);
+            binding.datesGrid.setAdapter(adapter);
+
+            binding.executePendingBindings();
+        }
+
+        /*public void setDatesGridAdapter(String month, String year) {
+            binding.monthText.setText(month);
+            binding.yearText.setText(year);
+
+            binding.datesGrid.setHasFixedSize(false);
+            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(binding.getRoot().getContext(), 7);
+            binding.datesGrid.setLayoutManager(layoutManager);
+            DatesGridAdapter adapter = new DatesGridAdapter(binding.getRoot().getContext(), month, year);
+            binding.datesGrid.setAdapter(adapter);
+
+            binding.executePendingBindings();
+        }*/
     }
 
-    public CalendarRecyclerAdapter(Context context, List<String> monthList, List<String> yearList) {
+    public CalendarRecyclerAdapter(Context context, List<CalendarDates> monthList, List<String> yearList) {
 
         mContext = context;
         this.monthList = monthList;
@@ -59,30 +83,29 @@ public class CalendarRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
             Toaster.generateShortToast(mContext, mContext.getResources().getString(R.string.layout_unavailable));
         }
 
-        return new CalendarViewHolder(binding.getRoot());
+        return new CalendarViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
         CalendarViewHolder viewHolder = (CalendarViewHolder) holder;
-        viewHolder.monthText.setText(monthList.get(position));
-        viewHolder.yearText.setText(yearList.get(position));
-
-        setDatesGridAdapter(viewHolder, monthList.get(position), yearList.get(position));
+        viewHolder.setDatesGridAdapter(monthList.get(position % 12), yearList.get(position / 12));
     }
 
     @Override
     public int getItemCount() {
-        return monthList.size(); // should be yearList.size()...
+        return yearList.size() * 12;
     }
 
-    private void setDatesGridAdapter(CalendarViewHolder viewHolder, String month, String year) {
+    /*private void setDatesGridAdapter(CalendarViewHolder viewHolder, String month, String year) {
 
-        month = "JAN";
-        year = "2019";
-
+//        DatesGridAdapter adapter = new DatesGridAdapter(mContext, month, year);
+//        viewHolder.datesGrid.setAdapter(adapter);
+        viewHolder..setHasFixedSize(false);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(mContext, 7);
+        viewHolder.datesGrid.setLayoutManager(layoutManager);
         DatesGridAdapter adapter = new DatesGridAdapter(mContext, month, year);
         viewHolder.datesGrid.setAdapter(adapter);
-    }
+    }*/
 }

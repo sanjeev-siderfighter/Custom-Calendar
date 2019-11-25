@@ -10,18 +10,18 @@ import android.widget.GridView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.customcalendarlibrary.Adapter.CalendarRecyclerAdapter;
 import com.example.customcalendarlibrary.Adapter.DaysGridAdapter;
+import com.example.customcalendarlibrary.Util.CalendarDates;
 import com.example.customcalendarlibrary.Util.Toaster;
-import com.example.customcalendarlibrary.databinding.CalendarRecyclerViewLayoutBinding;
 import com.example.customcalendarlibrary.databinding.CustomCalendarHomeLayoutBinding;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 public class CustomCalendar extends View {
@@ -68,7 +68,6 @@ public class CustomCalendar extends View {
         if (inflater != null) {
 
             binding = DataBindingUtil.setContentView(mActivity, R.layout.custom_calendar_home_layout);
-
             setupGridView();
             setupRecyclerView();
         } else {
@@ -79,22 +78,25 @@ public class CustomCalendar extends View {
 
     private void setupGridView() {
 
-        GridView daysGrid = binding.gridviewForDays;
+        GridView daysGrid = binding.gridViewForDays;
         DaysGridAdapter adapter = new DaysGridAdapter(mContext);
         daysGrid.setAdapter(adapter);
     }
 
     private void setupRecyclerView() {
 
-        RecyclerView calendarRecyclerView = binding.recyclerviewForDates;
+        RecyclerView calendarRecyclerView = binding.recyclerViewForDates;
 
-        List<String> months = new ArrayList<>();
-        List<String> years = new ArrayList<>();
+        List<CalendarDates> months;
+        List<String> years;
 
-        for(int i = 0; i < 12; i++) {
-            months.add("JAN");
-            years.add("2019");
-        }
+//        months = Arrays.asList("JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER");
+        months = Arrays.asList(CalendarDates.JANUARY, CalendarDates.FEBRUARY, CalendarDates.MARCH,
+                                CalendarDates.APRIL, CalendarDates.MAY, CalendarDates.JUNE,
+                                CalendarDates.JULY, CalendarDates.AUGUST, CalendarDates.SEPTEMBER,
+                                CalendarDates.OCTOBER, CalendarDates.NOVEMBER, CalendarDates.DECEMBER);
+
+        years = Arrays.asList("2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019");
 
         calendarRecyclerView.setHasFixedSize(false);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext);

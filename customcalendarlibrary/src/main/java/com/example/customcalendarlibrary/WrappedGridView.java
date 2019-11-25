@@ -6,8 +6,9 @@ import android.util.AttributeSet;
 import android.widget.GridView;
 
 import androidx.annotation.RequiresApi;
+import androidx.recyclerview.widget.RecyclerView;
 
-public class WrappedGridView extends GridView {
+public class WrappedGridView extends RecyclerView {
     public WrappedGridView(Context context) {
         super(context);
     }
@@ -18,11 +19,6 @@ public class WrappedGridView extends GridView {
 
     public WrappedGridView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public WrappedGridView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
     }
 
     @Override
