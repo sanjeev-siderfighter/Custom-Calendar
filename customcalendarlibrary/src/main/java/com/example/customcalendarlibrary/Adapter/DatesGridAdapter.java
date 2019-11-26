@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -12,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.customcalendarlibrary.R;
 import com.example.customcalendarlibrary.Util.CalendarDates;
+import com.example.customcalendarlibrary.Util.CalendarUtil;
 import com.example.customcalendarlibrary.Util.Toaster;
 import com.example.customcalendarlibrary.databinding.DaysGridItemsBinding;
 
@@ -37,15 +37,48 @@ public class DatesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    private static class DatesGridViewHolder extends RecyclerView.ViewHolder {
+    private static class DatesGridViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView dateText;
+        private DaysGridItemsBinding binding;
+        private Context mContext;
 
-        public DatesGridViewHolder(@NonNull View itemView) {
-            super(itemView);
-            dateText = itemView.findViewById(R.id.day_text);
+        private int selectedFromPosition, selectedToPosition;
 
-            // set on click listener here...
+        DatesGridViewHolder(Context context, @NonNull DaysGridItemsBinding binding) {
+
+            super(binding.getRoot());
+            this.binding = binding;
+            mContext = context;
+
+            selectedFromPosition = selectedToPosition = CalendarUtil.INITIAL_VALUE;
+
+            setEvents();
+        }
+
+        void setContent(String text) {
+
+            binding.dayText.setText(text);
+        }
+
+        private void setEvents() {
+
+            binding.dayText.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+
+            if (view == binding.dayText) {
+
+                Toaster.generateShortToast(mContext, String.valueOf(getAdapterPosition()));
+
+                if (selectedFromPosition == CalendarUtil.INITIAL_VALUE) {
+                    selectedFromPosition = getAdapterPosition();
+                } else {
+                    selectedToPosition = getAdapterPosition();
+                    selectedFromPosition = CalendarUtil.INITIAL_VALUE;
+                }
+            }
         }
     }
 
@@ -62,14 +95,16 @@ public class DatesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             Toaster.generateShortToast(mContext, mContext.getResources().getString(R.string.layout_unavailable));
         }
 
-        return new DatesGridViewHolder(binding.getRoot());
+//        return new DatesGridViewHolder(binding.getRoot());
+        return new DatesGridViewHolder(mContext, binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
         DatesGridViewHolder viewHolder = (DatesGridViewHolder) holder;
-        viewHolder.dateText.setText(String.valueOf(dates.get(position)));
+        viewHolder.setContent(String.valueOf(dates.get(position)));
+//        viewHolder.dateText.setText(String.valueOf(dates.get(position)));
 //        viewHolder.dateText.setGravity(Gravity.CENTER);
     }
 

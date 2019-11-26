@@ -5,25 +5,55 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/grid_margin"
+        android:layout_marginLeft="@dimen/grid_margin">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".05" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_right"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".95" />
 
         <GridView
             android:id="@+id/grid_view_for_days"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:numColumns="7"
+            android:paddingTop="@dimen/days_grid_top_padding"
+            android:paddingBottom="@dimen/days_grid_bottom_padding"
             app:layout_constraintBottom_toTopOf="@id/recycler_view_for_dates"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/guide_right"
+            app:layout_constraintStart_toStartOf="@id/guide_left"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_for_dates"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/calendar_recycler_view_margin"
+            app:layout_constraintBottom_toTopOf="@id/button_save"
             app:layout_constraintEnd_toEndOf="@id/grid_view_for_days"
             app:layout_constraintStart_toStartOf="@id/grid_view_for_days"
             app:layout_constraintTop_toBottomOf="@id/grid_view_for_days" />
+
+        <Button
+            android:id="@+id/button_save"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/button_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/grid_view_for_days"
+            app:layout_constraintStart_toStartOf="@id/grid_view_for_days"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

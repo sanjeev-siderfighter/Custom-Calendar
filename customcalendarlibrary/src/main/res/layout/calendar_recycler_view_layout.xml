@@ -4,38 +4,51 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/calendar_item_margin">
 
-        <TextView
-            android:id="@+id/month_text"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/year_month_part"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="SEPTEMBER"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
+            app:layout_constraintEnd_toEndOf="parent">
 
-        <TextView
-            android:id="@+id/year_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="YYYY"
-            app:layout_constraintStart_toEndOf="@id/month_text"
-            app:layout_constraintTop_toTopOf="@id/month_text"
-            app:layout_constraintBottom_toBottomOf="@id/month_text"
-            />
+            <TextView
+                android:id="@+id/month_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/month_hint"
+                android:paddingStart="@dimen/calendar_month_padding"
+                android:paddingLeft="@dimen/calendar_month_padding"
+                android:paddingEnd="@dimen/calendar_month_padding"
+                android:paddingRight="@dimen/calendar_month_padding"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-<!--        <com.example.customcalendarlibrary.WrappedGridView-->
+            <TextView
+                android:id="@+id/year_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/year_hit"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/month_text"
+                app:layout_constraintStart_toEndOf="@id/month_text"
+                app:layout_constraintTop_toTopOf="@id/month_text" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/dates_grid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/month_text"
+            android:layout_marginTop="@dimen/calendar_item_margin"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/year_month_part" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

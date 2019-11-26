@@ -90,7 +90,6 @@ public class CustomCalendar extends View {
         List<CalendarDates> months;
         List<String> years;
 
-//        months = Arrays.asList("JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER");
         months = Arrays.asList(CalendarDates.JANUARY, CalendarDates.FEBRUARY, CalendarDates.MARCH,
                                 CalendarDates.APRIL, CalendarDates.MAY, CalendarDates.JUNE,
                                 CalendarDates.JULY, CalendarDates.AUGUST, CalendarDates.SEPTEMBER,

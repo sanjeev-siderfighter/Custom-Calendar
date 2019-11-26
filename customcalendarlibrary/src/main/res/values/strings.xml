@@ -3,4 +3,8 @@
 
     <string name="layout_unavailable">Did not find the layout file.</string>
     <string name="day">dd</string>
+
+    <string name="button_text">Done</string>
+    <string name="month_hint">mm</string>
+    <string name="year_hit">YYYY</string>
 </resources>
