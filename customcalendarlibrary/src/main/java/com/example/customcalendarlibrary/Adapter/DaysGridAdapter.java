@@ -59,7 +59,7 @@ public class DaysGridAdapter extends BaseAdapter {
             binding.dayText.setText(daysList.get(position));
             convertView = binding.getRoot();
 
-            //holder.dayText = binding.dayText;
+            //holder.dayText = monthYearBinding.dayText;
 
 
 //            convertView = inflater.inflate(R.layout.days_grid_items, null);

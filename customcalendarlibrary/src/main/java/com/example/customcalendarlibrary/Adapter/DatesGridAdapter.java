@@ -95,7 +95,7 @@ public class DatesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             Toaster.generateShortToast(mContext, mContext.getResources().getString(R.string.layout_unavailable));
         }
 
-//        return new DatesGridViewHolder(binding.getRoot());
+//        return new DatesGridViewHolder(monthYearBinding.getRoot());
         return new DatesGridViewHolder(mContext, binding);
     }
 
