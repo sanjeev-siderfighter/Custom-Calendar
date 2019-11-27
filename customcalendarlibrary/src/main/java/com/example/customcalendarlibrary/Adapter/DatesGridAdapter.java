@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.customcalendarlibrary.R;
 import com.example.customcalendarlibrary.Util.CalendarDates;
 import com.example.customcalendarlibrary.Util.CalendarUtil;
+import com.example.customcalendarlibrary.Util.DateCommunicatorWithCalendar;
 import com.example.customcalendarlibrary.Util.Toaster;
 import com.example.customcalendarlibrary.databinding.DaysGridItemsBinding;
 
@@ -25,10 +26,15 @@ public class DatesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private Context mContext;
     private DaysGridItemsBinding binding;
 
-    DatesGridAdapter(Context context, CalendarDates month, String year) {
+    private int monthYearPosition;
+    private static DateCommunicatorWithCalendar communicatorWithCalendar;
+
+    DatesGridAdapter(Context context, CalendarDates month, String year, int position, Object communicator) {
 
         mContext = context;
+        monthYearPosition = position;
         dates.clear();
+        communicatorWithCalendar = (DateCommunicatorWithCalendar) communicator;
 
         int monthSize = month.getNumberOfDays(Integer.valueOf(year));
 
@@ -40,18 +46,17 @@ public class DatesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private static class DatesGridViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private DaysGridItemsBinding binding;
-        private Context mContext;
 
-        private int selectedFromPosition, selectedToPosition;
+        private int monthYearPosition;
+        private int selectedDatePosition;
 
-        DatesGridViewHolder(Context context, @NonNull DaysGridItemsBinding binding) {
+        DatesGridViewHolder(@NonNull DaysGridItemsBinding binding, int monthYearPosition) {
 
             super(binding.getRoot());
             this.binding = binding;
-            mContext = context;
+            this.monthYearPosition = monthYearPosition;
 
-            selectedFromPosition = selectedToPosition = CalendarUtil.INITIAL_VALUE;
-
+            selectedDatePosition = CalendarUtil.INITIAL_VALUE;
             setEvents();
         }
 
@@ -69,16 +74,17 @@ public class DatesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         public void onClick(View view) {
 
             if (view == binding.dayText) {
-
-                Toaster.generateShortToast(mContext, String.valueOf(getAdapterPosition()));
-
-                if (selectedFromPosition == CalendarUtil.INITIAL_VALUE) {
-                    selectedFromPosition = getAdapterPosition();
-                } else {
-                    selectedToPosition = getAdapterPosition();
-                    selectedFromPosition = CalendarUtil.INITIAL_VALUE;
-                }
+                selectedDatePosition = getAdapterPosition();
+                communicatorWithCalendar.getSelectedDatePosition(monthYearPosition, selectedDatePosition);
             }
+            /*if (selectedDatePosition == CalendarUtil.INITIAL_VALUE) {
+                selectedDatePosition = getAdapterPosition();
+                Toaster.generateShortToast(view.getContext(), "From " + selectedDatePosition);
+            } else {
+                dateEndPosition = getAdapterPosition();
+                Toaster.generateShortToast(view.getContext(), "From " + selectedDatePosition + " To " + dateEndPosition);
+                selectedDatePosition = CalendarUtil.INITIAL_VALUE;
+            }*/
         }
     }
 
@@ -95,8 +101,7 @@ public class DatesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             Toaster.generateShortToast(mContext, mContext.getResources().getString(R.string.layout_unavailable));
         }
 
-//        return new DatesGridViewHolder(monthYearBinding.getRoot());
-        return new DatesGridViewHolder(mContext, binding);
+        return new DatesGridViewHolder(binding, monthYearPosition);
     }
 
     @Override
@@ -104,8 +109,6 @@ public class DatesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         DatesGridViewHolder viewHolder = (DatesGridViewHolder) holder;
         viewHolder.setContent(String.valueOf(dates.get(position)));
-//        viewHolder.dateText.setText(String.valueOf(dates.get(position)));
-//        viewHolder.dateText.setGravity(Gravity.CENTER);
     }
 
     @Override
