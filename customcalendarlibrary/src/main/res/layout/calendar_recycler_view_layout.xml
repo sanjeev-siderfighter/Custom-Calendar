@@ -11,9 +11,11 @@
             android:id="@+id/year_month_part"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/calendar_item_margin"
+            android:background="@drawable/year_month_background_drawable"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/month_text"
@@ -24,6 +26,7 @@
                 android:paddingLeft="@dimen/calendar_month_padding"
                 android:paddingEnd="@dimen/calendar_month_padding"
                 android:paddingRight="@dimen/calendar_month_padding"
+                android:textColor="@color/year_text_color"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -33,22 +36,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/year_hit"
+                android:textColor="@color/month_text_color"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@id/month_text"
                 app:layout_constraintStart_toEndOf="@id/month_text"
                 app:layout_constraintTop_toTopOf="@id/month_text" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/dates_grid"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="@dimen/calendar_item_margin"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/year_month_part" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

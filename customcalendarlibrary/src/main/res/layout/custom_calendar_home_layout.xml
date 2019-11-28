@@ -52,8 +52,7 @@
             android:text="@string/button_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/grid_view_for_days"
-            app:layout_constraintStart_toStartOf="@id/grid_view_for_days"/>
-
+            app:layout_constraintStart_toStartOf="@id/grid_view_for_days" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

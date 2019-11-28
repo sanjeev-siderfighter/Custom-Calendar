@@ -14,14 +14,13 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.customcalendarlibrary.Adapter.CalendarRecyclerAdapter;
-import com.example.customcalendarlibrary.Adapter.DaysGridAdapter;
+import com.example.customcalendarlibrary.Adapters.CalendarRecyclerAdapter;
+import com.example.customcalendarlibrary.Adapters.DaysGridAdapter;
 import com.example.customcalendarlibrary.Util.CalendarDates;
 import com.example.customcalendarlibrary.Util.Toaster;
 import com.example.customcalendarlibrary.databinding.CustomCalendarHomeLayoutBinding;
 
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 public class CustomCalendar extends View {

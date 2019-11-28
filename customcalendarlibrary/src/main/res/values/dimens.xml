@@ -7,4 +7,6 @@
     <dimen name="calendar_recycler_view_margin">10dp</dimen>
     <dimen name="calendar_item_margin">10dp</dimen>
     <dimen name="calendar_month_padding">10dp</dimen>
+    <dimen name="background_padding">8dp</dimen>
+    <dimen name="cardview_radius">10dp</dimen>
 </resources>

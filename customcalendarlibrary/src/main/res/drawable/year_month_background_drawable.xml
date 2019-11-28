@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+
+    <corners android:radius="@dimen/calendar_item_margin" />
+
+    <padding
+        android:bottom="@dimen/background_padding"
+        android:left="@dimen/background_padding"
+        android:right="@dimen/background_padding"
+        android:top="@dimen/background_padding" />
+
+    <gradient
+        android:angle="45"
+        android:startColor="@color/gradient_start_color"
+        android:endColor="@color/gradient_end_color"
+        android:gradientRadius="@dimen/cardview_default_radius"/>
+
+</shape>

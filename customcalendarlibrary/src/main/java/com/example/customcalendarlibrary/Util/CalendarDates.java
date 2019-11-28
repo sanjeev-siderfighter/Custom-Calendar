@@ -33,7 +33,6 @@ public enum CalendarDates {
             default:
                 return 31;
         }
-
     }
 
     public String getMonthName() {
@@ -78,6 +77,39 @@ public enum CalendarDates {
 
             default:
                 return "Not Possible";
+        }
+    }
+
+    public int getValue() {
+
+        switch (this) {
+
+            case JANUARY:
+                return 0;
+            case FEBRUARY:
+                return 1;
+            case MARCH:
+                return 2;
+            case APRIL:
+                return 3;
+            case MAY:
+                return 4;
+            case JUNE:
+                return 5;
+            case JULY:
+                return 6;
+            case AUGUST:
+                return 7;
+            case SEPTEMBER:
+                return 8;
+            case OCTOBER:
+                return 9;
+            case NOVEMBER:
+                return 10;
+            case DECEMBER:
+                return 11;
+            default:
+                return -1;
         }
     }
 

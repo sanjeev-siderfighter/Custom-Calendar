@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="highlight_color">#90C490</color>
+    <color name="year_text_color">#0606F0</color>
+    <color name="month_text_color">#F3F306</color>
+    <color name="gradient_start_color">@color/month_text_color</color>
+    <color name="gradient_end_color">@color/year_text_color</color>
+</resources>
