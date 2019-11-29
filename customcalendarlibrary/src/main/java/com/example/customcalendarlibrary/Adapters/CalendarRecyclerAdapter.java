@@ -13,6 +13,7 @@ import com.example.customcalendarlibrary.R;
 import com.example.customcalendarlibrary.Util.CalendarDates;
 import com.example.customcalendarlibrary.Util.CalendarUtil;
 import com.example.customcalendarlibrary.Util.DateCommunicatorWithCalendar;
+import com.example.customcalendarlibrary.Util.DateHighlightPositionStore;
 import com.example.customcalendarlibrary.Util.Toaster;
 import com.example.customcalendarlibrary.databinding.CalendarRecyclerViewLayoutBinding;
 import com.example.customcalendarlibrary.databinding.DatesGridRecyclerViewLayoutBinding;
@@ -26,7 +27,6 @@ public class CalendarRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
     private List<String> yearList;
     private List<CalendarDates> monthList;
 
-    private static int startMonth, endMonth, startDate, endDate;
     private static final int MONTH_YEAR_VIEW_TYPE = 0; // use for even positions
     private static final int DATES_VIEW_TYPE = 1; // use for odd positions
 
@@ -46,8 +46,6 @@ public class CalendarRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             super(monthYearBinding.getRoot());
             this.monthYearBinding = monthYearBinding;
-//            setClickListeners();
-            startMonth = endMonth = startDate = endDate = CalendarUtil.INITIAL_VALUE;
         }
         void setContent(CalendarDates month, String year) {
 
@@ -56,7 +54,7 @@ public class CalendarRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
 
     }
-    private static class DatesViewHolder extends RecyclerView.ViewHolder implements DateCommunicatorWithCalendar {
+    private class DatesViewHolder extends RecyclerView.ViewHolder implements DateCommunicatorWithCalendar {
 
 
         private DatesGridRecyclerViewLayoutBinding datesBinding;
@@ -75,18 +73,32 @@ public class CalendarRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
             datesBinding.datesGrid.setHasFixedSize(false);
             RecyclerView.LayoutManager layoutManager = new GridLayoutManager(datesBinding.getRoot().getContext(), CalendarUtil.NUMBER_OF_DAYS_IN_A_WEEK);
             datesBinding.datesGrid.setLayoutManager(layoutManager);
-            adapter = new DatesGridAdapter(datesBinding.getRoot().getContext(), month, year, getAdapterPosition(), this);
+            adapter = new DatesGridAdapter(datesBinding.getRoot().getContext(), month, year, position, this);
             datesBinding.datesGrid.setAdapter(adapter);
 
             datesBinding.executePendingBindings();
         }
 
         @Override
+        public void getSelectedDatePosition(int monthYearPosition, int dateStartPosition) {
+
+        }
+
+        @Override
+        public void notifyChange() {
+
+            notifyDataSetChanged();
+//            DateHighlightPositionStore.startMonth = DateHighlightPositionStore.endMonth =
+//                    DateHighlightPositionStore.startDate = DateHighlightPositionStore.endDate = CalendarUtil.INITIAL_VALUE;
+//            DatesGridAdapter.startMonthPos = DatesGridAdapter.endMonthPos = DatesGridAdapter.startDatePos = DatesGridAdapter.endDatePos = -1;
+        }
+
+        /*@Override
         public void getSelectedDatePosition(int month, int date) {
 
             caseSameMonths(month, date);
 
-            /*Context context = datesBinding.getRoot().getContext();
+            *//*Context context = datesBinding.getRoot().getContext();
 
             if (startMonth == CalendarUtil.INITIAL_VALUE) {
                 startMonth = month;
@@ -136,16 +148,16 @@ public class CalendarRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
                     endDate = date;
                     Toaster.generateShortToast(context, "From " + startDate + " To " + endDate);
                 }
-            } else*//* if (month == startMonth && month == endMonth)*//* {
+            } else*//**//* if (month == startMonth && month == endMonth)*//**//* {
                 caseSameMonths(date);
-            }*/
+            }*//*
         }
 
         private void caseSameMonths(int month, int date) {
 
             Context context = datesBinding.getRoot().getContext();
 
-            if (startDate == CalendarUtil.INITIAL_VALUE) {
+            *//*if (startDate == CalendarUtil.INITIAL_VALUE) {
                 startDate = date;
                 Toaster.generateShortToast(context, "From " + startDate);
             } else if (date < startDate) {
@@ -166,8 +178,8 @@ public class CalendarRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
                 Toaster.generateShortToast(context, "Check for more cases!!");
             }
 
-            adapter.highlight(month, startDate, endDate);
-        }
+            adapter.highlight(month, startDate, endDate);*//*
+        }*/
 
     }
 
@@ -205,7 +217,7 @@ public class CalendarRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
         } else { // position == odd
 
             DatesViewHolder viewHolder = (DatesViewHolder) holder;
-            viewHolder.setContent(position, monthText, yearText);
+            viewHolder.setContent(pos, monthText, yearText);
         }
     }
 
@@ -222,10 +234,10 @@ public class CalendarRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public int getItemViewType(int position) {
 
-        if ((position & 1) == 0) {
+        if ((position & 1) == 0) { // even
 
             return MONTH_YEAR_VIEW_TYPE;
-        } else {
+        } else { // odd
 
             return DATES_VIEW_TYPE;
         }

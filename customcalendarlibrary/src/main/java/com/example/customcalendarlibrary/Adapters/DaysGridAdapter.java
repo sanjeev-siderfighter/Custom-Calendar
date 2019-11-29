@@ -16,9 +16,6 @@ import java.util.List;
 
 public class DaysGridAdapter extends BaseAdapter {
 
-    private Context mContext;
-    private DaysGridItemsBinding binding;
-
     private static final List<String> daysList;
     private static LayoutInflater inflater;
 
@@ -28,8 +25,7 @@ public class DaysGridAdapter extends BaseAdapter {
     }
 
     public DaysGridAdapter(Context context) {
-        mContext = context;
-        inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -52,25 +48,11 @@ public class DaysGridAdapter extends BaseAdapter {
 
         if (convertView == null) {
 
-            //Holder holder = new Holder();
-
-            binding = DataBindingUtil.inflate(inflater, R.layout.days_grid_items, null, false);
+            DaysGridItemsBinding binding = DataBindingUtil.inflate(inflater, R.layout.days_grid_items, null, false);
             binding.dayText.setText(daysList.get(position));
             convertView = binding.getRoot();
-
-            //holder.dayText = monthYearBinding.dayText;
-
-
-//            convertView = inflater.inflate(R.layout.days_grid_items, null);
-//            holder.dayText = convertView.findViewById(R.id.day_text);
-//            holder.dayText.setText(daysList.get(position));
         }
 
         return convertView;
     }
-
-    /*private class Holder {
-
-        TextView dayText;
-    }*/
 }
