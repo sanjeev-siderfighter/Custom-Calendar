@@ -86,7 +86,7 @@ public class DatesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         @Override
         public void onClick(View view) {
 
-            if (view == binding.dayText) {
+            if (view == binding.dayText && !binding.dayText.getText().toString().equalsIgnoreCase(CalendarUtil.BLANK_TEXT)) {
 
                 if (DateHighlightPositionStore.startMonth == CalendarUtil.INITIAL_VALUE) {
                     DateHighlightPositionStore.startMonth = monthYearPosition;
