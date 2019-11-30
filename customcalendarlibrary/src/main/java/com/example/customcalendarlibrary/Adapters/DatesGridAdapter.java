@@ -1,12 +1,12 @@
 package com.example.customcalendarlibrary.Adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,13 +30,12 @@ public class DatesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     private Context mContext;
     private DaysGridItemsBinding binding;
-    private DatesGridViewHolder viewHolder;
 
     private int monthYearPosition;
     private int startPositionForDayOfMonth;
     private static DateCommunicatorWithCalendar communicatorWithCalendar;
 
-    static int startMonthPos = -1, endMonthPos = -1, startDatePos = -1, endDatePos = -1;
+    private static int startMonthPos = -1, endMonthPos = -1, startDatePos = -1, endDatePos = -1;
 
     static {
         communicatorWithCalendar = null;
@@ -74,7 +73,7 @@ public class DatesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             setEvents();
         }
 
-        void setContent(String text, int start, int end) {
+        void setContent(String text) {
 
             binding.dayText.setText(text);
         }
@@ -88,8 +87,6 @@ public class DatesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         public void onClick(View view) {
 
             if (view == binding.dayText) {
-
-                boolean reset = false;
 
                 if (DateHighlightPositionStore.startMonth == CalendarUtil.INITIAL_VALUE) {
                     DateHighlightPositionStore.startMonth = monthYearPosition;
@@ -113,29 +110,12 @@ public class DatesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     startDatePos = DateHighlightPositionStore.startDate;
                 }
 
-                    highlight();
-                // upto this point, the values are correct...
-
-                Log.d("Highlight", "startMonth = " + startMonthPos
-                        + " startDate = " + startDatePos
-                        + " endMonth = " + endMonthPos
-                        + " endDate = " + endDatePos);
-
-                Toaster.generateShortToast(binding.getRoot().getContext(), "startMonth = " + /*DateHighlightPositionStore.startMonth*/ startMonthPos
-                        + " startDate = " + /*DateHighlightPositionStore.startDate*/ startDatePos
-                        + " endMonth = " + /*DateHighlightPositionStore.endMonth*/ endMonthPos
-                        + " endDate = " + /*DateHighlightPositionStore.endDate*/ endDatePos);
-
+                highlight();
                 communicatorWithCalendar.notifyChange();
             }
         }
 
-        public void highlight() {
-
-            Log.d("Highlight", "startMonth = " + startMonthPos
-                    + " startDate = " + startDatePos
-                    + " endMonth = " + endMonthPos
-                    + " endDate = " + endDatePos);
+        void highlight() {
 
             if (startMonthPos != -1) {
                 if (endMonthPos == -1) {
@@ -144,49 +124,41 @@ public class DatesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     setBackground(startMonthPos, endMonthPos, startDatePos, endDatePos);
                     DateHighlightPositionStore.startMonth = DateHighlightPositionStore.endMonth = DateHighlightPositionStore.startDate = DateHighlightPositionStore.endDate = CalendarUtil.INITIAL_VALUE;
                 }
-            } /*else {
-                Toaster.generateShortToast(binding.getRoot().getContext(), "Highlighter not working.");
-            }*/
-
-//            Toaster.generateShortToast(binding.getRoot().getContext(), "startMonth = " + DateHighlightPositionStore.startMonth
-//                    + " startDate = " + DateHighlightPositionStore.startDate
-//                    + " endMonth = " + DateHighlightPositionStore.endMonth
-//                    + " endDate = " + DateHighlightPositionStore.endDate);
+            }
         }
 
         private void setBackground(int startMonthPos, int startDatePos) {
             if (monthYearPosition == startMonthPos && getAdapterPosition() == startDatePos) {
                 if (!binding.dayText.getText().toString().equalsIgnoreCase(CalendarUtil.BLANK_TEXT)) {
-                    binding.dayText.setBackgroundColor(binding.getRoot().getContext().getResources().getColor(R.color.highlight_color));
+                    binding.dayText.setBackgroundColor(ContextCompat.getColor(binding.getRoot().getContext(), R.color.highlight_color));
                 }
             }
         }
 
         private void setBackground(int startMonthPos, int endMonthPos, int startDatePos, int endDatePos) {
-//            if (monthYearPosition >= startMonthPos && monthYearPosition <= endMonthPos) {
             if (monthYearPosition == startMonthPos && monthYearPosition == endMonthPos) {
                 if (getAdapterPosition() >= startDatePos && getAdapterPosition() <= endDatePos) {
                     if (!binding.dayText.getText().toString().equalsIgnoreCase(CalendarUtil.BLANK_TEXT)) {
-                        binding.dayText.setBackgroundColor(binding.getRoot().getContext().getResources().getColor(R.color.highlight_color));
+                        binding.dayText.setBackgroundColor(ContextCompat.getColor(binding.getRoot().getContext(), R.color.highlight_color));
                     }
                 }
             } else if (startMonthPos < endMonthPos) {
                 if (monthYearPosition == startMonthPos) {
                     if (getAdapterPosition() >= startDatePos) {
                         if (!binding.dayText.getText().toString().equalsIgnoreCase(CalendarUtil.BLANK_TEXT)) {
-                            binding.dayText.setBackgroundColor(binding.getRoot().getContext().getResources().getColor(R.color.highlight_color));
+                            binding.dayText.setBackgroundColor(ContextCompat.getColor(binding.getRoot().getContext(), R.color.highlight_color));
                         }
                     }
                 }
                 if (monthYearPosition > startMonthPos && monthYearPosition < endMonthPos) {
                     if (!binding.dayText.getText().toString().equalsIgnoreCase(CalendarUtil.BLANK_TEXT)) {
-                        binding.dayText.setBackgroundColor(binding.getRoot().getContext().getResources().getColor(R.color.highlight_color));
+                        binding.dayText.setBackgroundColor(ContextCompat.getColor(binding.getRoot().getContext(), R.color.highlight_color));
                     }
                 }
                 if (monthYearPosition == endMonthPos) {
                     if (getAdapterPosition() <= endDatePos) {
                         if (!binding.dayText.getText().toString().equalsIgnoreCase(CalendarUtil.BLANK_TEXT)) {
-                            binding.dayText.setBackgroundColor(binding.getRoot().getContext().getResources().getColor(R.color.highlight_color));
+                            binding.dayText.setBackgroundColor(ContextCompat.getColor(binding.getRoot().getContext(), R.color.highlight_color));
                         }
                     }
                 }
@@ -199,7 +171,6 @@ public class DatesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        startMonthPos = endMonthPos = startDatePos = endDatePos = CalendarUtil.INITIAL_VALUE;
 
         if (inflater != null) {
             binding = DataBindingUtil.inflate(inflater, R.layout.days_grid_items, parent, false);
@@ -214,11 +185,11 @@ public class DatesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
-        viewHolder = (DatesGridViewHolder) holder;
+        DatesGridViewHolder viewHolder = (DatesGridViewHolder) holder;
         if (position >= startPositionForDayOfMonth) {
-            viewHolder.setContent(String.valueOf(dates.get(position - startPositionForDayOfMonth)), startMonthPos, startDatePos);
+            viewHolder.setContent(String.valueOf(dates.get(position - startPositionForDayOfMonth)));
         } else {
-            viewHolder.setContent(CalendarUtil.BLANK_TEXT, -1, -1);
+            viewHolder.setContent(CalendarUtil.BLANK_TEXT);
         }
 
         viewHolder.highlight();

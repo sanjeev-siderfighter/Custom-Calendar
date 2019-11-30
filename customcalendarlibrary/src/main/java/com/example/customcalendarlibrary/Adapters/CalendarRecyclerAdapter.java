@@ -13,8 +13,6 @@ import com.example.customcalendarlibrary.R;
 import com.example.customcalendarlibrary.Util.CalendarDates;
 import com.example.customcalendarlibrary.Util.CalendarUtil;
 import com.example.customcalendarlibrary.Util.DateCommunicatorWithCalendar;
-import com.example.customcalendarlibrary.Util.DateHighlightPositionStore;
-import com.example.customcalendarlibrary.Util.Toaster;
 import com.example.customcalendarlibrary.databinding.CalendarRecyclerViewLayoutBinding;
 import com.example.customcalendarlibrary.databinding.DatesGridRecyclerViewLayoutBinding;
 
@@ -59,8 +57,6 @@ public class CalendarRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         private DatesGridRecyclerViewLayoutBinding datesBinding;
 
-        private DatesGridAdapter adapter;
-
 
         DatesViewHolder(@NonNull DatesGridRecyclerViewLayoutBinding datesBinding) {
 
@@ -73,114 +69,17 @@ public class CalendarRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
             datesBinding.datesGrid.setHasFixedSize(false);
             RecyclerView.LayoutManager layoutManager = new GridLayoutManager(datesBinding.getRoot().getContext(), CalendarUtil.NUMBER_OF_DAYS_IN_A_WEEK);
             datesBinding.datesGrid.setLayoutManager(layoutManager);
-            adapter = new DatesGridAdapter(datesBinding.getRoot().getContext(), month, year, position, this);
+            DatesGridAdapter adapter = new DatesGridAdapter(datesBinding.getRoot().getContext(), month, year, position, this);
             datesBinding.datesGrid.setAdapter(adapter);
 
             datesBinding.executePendingBindings();
         }
 
         @Override
-        public void getSelectedDatePosition(int monthYearPosition, int dateStartPosition) {
-
-        }
-
-        @Override
         public void notifyChange() {
 
             notifyDataSetChanged();
-//            DateHighlightPositionStore.startMonth = DateHighlightPositionStore.endMonth =
-//                    DateHighlightPositionStore.startDate = DateHighlightPositionStore.endDate = CalendarUtil.INITIAL_VALUE;
-//            DatesGridAdapter.startMonthPos = DatesGridAdapter.endMonthPos = DatesGridAdapter.startDatePos = DatesGridAdapter.endDatePos = -1;
         }
-
-        /*@Override
-        public void getSelectedDatePosition(int month, int date) {
-
-            caseSameMonths(month, date);
-
-            *//*Context context = datesBinding.getRoot().getContext();
-
-            if (startMonth == CalendarUtil.INITIAL_VALUE) {
-                startMonth = month;
-                startDate = date;
-                Toaster.generateShortToast(context, "From " + startDate);
-            } else if (month < startMonth) {
-                startMonth = month;
-                endMonth = CalendarUtil.INITIAL_VALUE;
-                startDate = date;
-                endDate = CalendarUtil.INITIAL_VALUE;
-                Toaster.generateShortToast(context, "From " + startDate);
-            } else if (month > startMonth && endMonth == CalendarUtil.INITIAL_VALUE) {
-                endMonth = month;
-                endDate = date;
-                Toaster.generateShortToast(context, "From " + startDate + " To " + endDate);
-            } else if (month > startMonth && month < endMonth) { // if (month > startMonth && month == endMonth), if (month == startMonth && month < endMonth)
-                endMonth = month;
-                endDate = date;
-                Toaster.generateShortToast(context, "From " + startDate + " To " + endDate);
-            } else if (endMonth != CalendarUtil.INITIAL_VALUE && month > endMonth) {
-                startMonth = month;
-                endMonth = CalendarUtil.INITIAL_VALUE;
-                startDate = date;
-                endDate = CalendarUtil.INITIAL_VALUE;
-                Toaster.generateShortToast(context, "From " + startDate);
-            } else if (month == startMonth) {
-                if (month == endMonth) {
-                    caseSameMonths(date);
-                } else if (month > endMonth) {
-
-                } else {
-
-                }
-                if (date < startDate || date > startDate) {
-//                    endMonth = month;
-                    startDate = date;
-                    endDate = CalendarUtil.INITIAL_VALUE;
-                    Toaster.generateShortToast(context, "From " + startDate);
-                }
-            } else if (month == endMonth && month != startMonth) {
-                if (date > endDate) {
-                    startMonth = month;
-                    startDate = date;
-                    endDate = CalendarUtil.INITIAL_VALUE;
-                    Toaster.generateShortToast(context, "From " + startDate);
-                } else if (date < endDate) {
-                    endDate = date;
-                    Toaster.generateShortToast(context, "From " + startDate + " To " + endDate);
-                }
-            } else*//**//* if (month == startMonth && month == endMonth)*//**//* {
-                caseSameMonths(date);
-            }*//*
-        }
-
-        private void caseSameMonths(int month, int date) {
-
-            Context context = datesBinding.getRoot().getContext();
-
-            *//*if (startDate == CalendarUtil.INITIAL_VALUE) {
-                startDate = date;
-                Toaster.generateShortToast(context, "From " + startDate);
-            } else if (date < startDate) {
-                startDate = date;
-                endDate = CalendarUtil.INITIAL_VALUE;
-                Toaster.generateShortToast(context, "From " + startDate);
-            } else if (date > startDate && endDate == CalendarUtil.INITIAL_VALUE) {
-                endDate = date;
-                Toaster.generateShortToast(context, "From " + startDate + " To " + endDate);
-            } else if (date > startDate && date < endDate) {
-                endDate = date;
-                Toaster.generateShortToast(context, "From " + startDate + " To " + endDate);
-            } else if (date > endDate) {
-                startDate = date;
-                endDate = CalendarUtil.INITIAL_VALUE;
-                Toaster.generateShortToast(context, "From " + startDate);
-            } else {
-                Toaster.generateShortToast(context, "Check for more cases!!");
-            }
-
-            adapter.highlight(month, startDate, endDate);*//*
-        }*/
-
     }
 
     @NonNull
@@ -191,11 +90,13 @@ public class CalendarRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         if (viewType == MONTH_YEAR_VIEW_TYPE) {
 
-            CalendarRecyclerViewLayoutBinding monthYearBinding = DataBindingUtil.inflate(inflater, R.layout.calendar_recycler_view_layout, parent, false);
+            CalendarRecyclerViewLayoutBinding monthYearBinding = DataBindingUtil.inflate(inflater,
+                    R.layout.calendar_recycler_view_layout, parent, false);
             return new CalendarViewHolder(monthYearBinding);
         } else { // (DATES_VIEW_TYPE)
 
-            DatesGridRecyclerViewLayoutBinding datesBinding = DataBindingUtil.inflate(inflater, R.layout.dates_grid_recycler_view_layout, parent, false);
+            DatesGridRecyclerViewLayoutBinding datesBinding = DataBindingUtil.inflate(inflater,
+                    R.layout.dates_grid_recycler_view_layout, parent, false);
             return new DatesViewHolder(datesBinding);
         }
 

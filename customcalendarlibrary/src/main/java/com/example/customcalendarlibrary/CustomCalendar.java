@@ -103,4 +103,5 @@ public class CustomCalendar extends View {
         CalendarRecyclerAdapter adapter = new CalendarRecyclerAdapter(mContext, months, years);
         calendarRecyclerView.setAdapter(adapter);
     }
+
 }
