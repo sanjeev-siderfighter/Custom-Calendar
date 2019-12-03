@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.GridView;
@@ -23,7 +22,6 @@ import com.example.customcalendarlibrary.Util.SelectedDate;
 import com.example.customcalendarlibrary.Util.Toaster;
 import com.example.customcalendarlibrary.databinding.CustomCalendarHomeLayoutBinding;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -91,7 +89,7 @@ public class CustomCalendar extends View {
                 @Override
                 public void onClick(View v) {
                     selectedDate = adapter.getSelectedDates();
-                    listener.getSelectedDates(selectedDate);
+                    listener.getSelectedDates(getSelectedDate());
                 }
             });
             setupGridView();
@@ -100,6 +98,32 @@ public class CustomCalendar extends View {
 
             Toaster.generateShortToast(mContext, getResources().getString(R.string.layout_unavailable));
         }
+    }
+
+    private String getSelectedDate() {
+
+        int startDay, startMonth, startYear;
+        int endDay = -1, endMonth = -1, endYear = -1;
+
+        startDay = selectedDate.getSelectedStartDay();
+        if (startDay == -1) {
+            return getResources().getString(R.string.no_date_selected);
+        }
+        startMonth = months.get(selectedDate.getSelectedStartMonthPos() % 12).getValue() + 1;
+        startYear = Integer.valueOf(selectedDate.getYearList().get(selectedDate.getSelectedStartMonthPos() / 12));
+
+        if (selectedDate.getSelectedEndMonthPos() != -1) {
+            endDay = selectedDate.getSelectedEndDay();
+            endMonth = months.get(selectedDate.getSelectedStartMonthPos() % 12).getValue() + 1;
+            endYear = Integer.valueOf(selectedDate.getYearList().get(selectedDate.getSelectedStartMonthPos() / 12));
+        }
+
+        String res = startDay + "-" + startMonth + "-" + startYear;
+        if (endDay != -1) {
+            res += "||" + endDay + "-" + endMonth + "-" + endYear;
+        }
+
+        return res;
     }
 
     private void setupGridView() {
@@ -177,8 +201,18 @@ public class CustomCalendar extends View {
 
     }
 
+    public void setAlreadySelectedDate(int day, int month, int year) {
+
+        CalendarDates myMonth = CalendarDates.getMonthFromValue(month);
+        if (year > Integer.valueOf(years.get(years.size() - 1)) || month < 0 || month > 11 || day <= 0 || (myMonth != null && day > myMonth.getNumberOfDays(year))) {
+            Toaster.generateLongToast(mContext, "Check your already selected date and your min date you provided.");
+        } else {
+            adapter.setAlreadySelectedDate(day, month, year);
+        }
+    }
+
     public interface CustomCalendarSelectedDatesListener {
 
-        void getSelectedDates(SelectedDate selectedDate);
+        void getSelectedDates(String selectedDate);
     }
 }

@@ -1,14 +1,26 @@
 package com.example.customcalendarlibrary.Util;
 
+import java.util.List;
+
 public class SelectedDate {
 
     private int selectedStartDay, selectedEndDay, selectedStartMonthPos, selectedEndMonthPos;
+    private List<String> yearList;
 
-    public SelectedDate(int selectedStartDay, int selectedEndDay, int selectedStartMonthPos, int selectedEndMonthPos) {
+    public SelectedDate(int selectedStartDay, int selectedEndDay, int selectedStartMonthPos, int selectedEndMonthPos, List<String> yearList) {
         this.selectedStartDay = selectedStartDay;
         this.selectedEndDay = selectedEndDay;
         this.selectedStartMonthPos = selectedStartMonthPos;
         this.selectedEndMonthPos = selectedEndMonthPos;
+        this.yearList = yearList;
+    }
+
+    public void setYearList(List<String> yearList) {
+        this.yearList = yearList;
+    }
+
+    public List<String> getYearList() {
+        return yearList;
     }
 
     public void setSelectedDate(int selectedStartDay, int selectedEndDay, int selectedStartMonthPos, int selectedEndMonthPos) {

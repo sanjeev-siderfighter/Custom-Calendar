@@ -76,7 +76,7 @@ public class DatesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             this.binding = binding;
             this.monthYearPosition = monthYearPosition;
 
-            selectedDate = new SelectedDate(-1, -1, -1, -1);
+            selectedDate = new SelectedDate(-1, -1, -1, -1, null);
 
             setEvents();
         }
@@ -133,11 +133,12 @@ public class DatesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     DateHighlightPositionStore.startMonth = DateHighlightPositionStore.endMonth = DateHighlightPositionStore.startDate = DateHighlightPositionStore.endDate = CalendarUtil.INITIAL_VALUE;
                 }
             }
-            selectedDate.setSelectedDate(startDatePos, endDatePos, startMonthPos, endMonthPos);
+            selectedDate.setSelectedDate(startDatePos - 1 - startPositionForDayOfMonth, endDatePos - 1 - startPositionForDayOfMonth, startMonthPos, endMonthPos);
         }
 
-        SelectedDate getSelectedDate() {
+        SelectedDate getSelectedDate(List<String> yearList) {
 
+            selectedDate.setYearList(yearList);
             return selectedDate;
         }
 
@@ -196,6 +197,14 @@ public class DatesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
             }
         }
+
+        // finally set it here...
+        void setAlreadySelectedDate(int day, int month, int year, List<String> yearList) {
+            int currMonth = monthYearPosition % 12, currYear = monthYearPosition / 12;
+            if (currMonth + 1 == month && year == Integer.valueOf(yearList.get(currYear)) && day == Integer.valueOf(binding.dayText.getText().toString())) {
+                binding.dayText.setBackgroundColor(ContextCompat.getColor(binding.getRoot().getContext(), R.color.highlight_color));
+            }
+        }
     }
 
     @NonNull
@@ -238,8 +247,12 @@ public class DatesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         DatesGridAdapter.minDayPosition = minDayPosition;
     }
 
-    SelectedDate getSelectedDate() {
+    SelectedDate getSelectedDate(List<String> yearList) {
 
-        return viewHolder.getSelectedDate();
+        return viewHolder.getSelectedDate(yearList);
+    }
+
+    void setAlreadySelectedDate(int day, int month, int year, List<String> yearList) {
+        viewHolder.setAlreadySelectedDate(day, month, year, yearList);
     }
 }

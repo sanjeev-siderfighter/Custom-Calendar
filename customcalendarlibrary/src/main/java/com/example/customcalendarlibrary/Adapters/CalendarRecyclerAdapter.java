@@ -17,8 +17,6 @@ import com.example.customcalendarlibrary.Util.DateCommunicatorWithCalendar;
 import com.example.customcalendarlibrary.Util.SelectedDate;
 import com.example.customcalendarlibrary.databinding.CalendarRecyclerViewLayoutBinding;
 import com.example.customcalendarlibrary.databinding.DatesGridRecyclerViewLayoutBinding;
-
-import java.util.Collections;
 import java.util.List;
 
 public class CalendarRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -82,8 +80,8 @@ public class CalendarRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
             datesBinding.executePendingBindings();
         }
 
-        SelectedDate getSelectedDate() {
-            return adapter.getSelectedDate();
+        SelectedDate getSelectedDate(List<String> yearList) {
+            return adapter.getSelectedDate(yearList);
         }
 
         @Override
@@ -94,6 +92,10 @@ public class CalendarRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         void disableDates(int monthYearPosition, int dayPosition) {
             adapter.disableDates(monthYearPosition, dayPosition);
+        }
+
+        void setAlreadySelectedDate(int day, int month, int year, List<String> yearList) {
+            adapter.setAlreadySelectedDate(day, month, year, yearList);
         }
     }
 
@@ -201,10 +203,14 @@ public class CalendarRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     public SelectedDate getSelectedDates() {
 
-        return datesViewHolder.getSelectedDate();
+        return datesViewHolder.getSelectedDate(yearList);
     }
 
     private void changeVisibility(View view, int visibility) {
         view.setVisibility(visibility);
+    }
+
+    public void setAlreadySelectedDate(int day, int month, int year) {
+        datesViewHolder.setAlreadySelectedDate(day, month, year, yearList);
     }
 }

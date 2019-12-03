@@ -12,4 +12,5 @@
     <string name="wrong_days_input">The value of days does not correspond to the month and year.</string>
 
     <string name="min_date_error">Your minimum year is less than your start year</string>
+    <string name="no_date_selected">No date was selected</string>
 </resources>
