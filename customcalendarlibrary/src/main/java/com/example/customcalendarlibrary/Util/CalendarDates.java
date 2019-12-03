@@ -113,6 +113,73 @@ public enum CalendarDates {
         }
     }
 
+    public static CalendarDates getMonthFromName(String name) {
+
+        switch (name) {
+
+            case "JANUARY":
+                return JANUARY;
+            case "FEBRUARY":
+                return FEBRUARY;
+            case "MARCH":
+                return MARCH;
+            case "APRIL":
+                return APRIL;
+            case "MAY":
+                return MAY;
+            case "JUNE":
+                return JUNE;
+            case "JULY":
+                return JULY;
+            case "AUGUST":
+                return AUGUST;
+            case "SEPTEMBER":
+                return SEPTEMBER;
+            case "OCTOBER":
+                return OCTOBER;
+            case "NOVEMBER":
+                return NOVEMBER;
+            case "DECEMBER":
+                return DECEMBER;
+            default:
+                return null;
+
+        }
+    }
+
+    public static CalendarDates getMonthFromValue(int value) {
+
+        switch (value) {
+
+            case 0:
+                return JANUARY;
+            case 1:
+                return FEBRUARY;
+            case 2:
+                return MARCH;
+            case 3:
+                return APRIL;
+            case 4:
+                return MAY;
+            case 5:
+                return JUNE;
+            case 6:
+                return JULY;
+            case 7:
+                return AUGUST;
+            case 8:
+                return SEPTEMBER;
+            case 9:
+                return OCTOBER;
+            case 10:
+                return NOVEMBER;
+            case 11:
+                return DECEMBER;
+            default:
+                return null;
+        }
+    }
+
     private boolean leapYear(int year) {
 
         if (year % 4 == 0) {

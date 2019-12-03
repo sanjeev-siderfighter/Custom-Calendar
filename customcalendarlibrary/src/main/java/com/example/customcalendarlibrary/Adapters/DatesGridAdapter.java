@@ -15,6 +15,7 @@ import com.example.customcalendarlibrary.Util.CalendarDates;
 import com.example.customcalendarlibrary.Util.CalendarUtil;
 import com.example.customcalendarlibrary.Util.DateCommunicatorWithCalendar;
 import com.example.customcalendarlibrary.Util.DateHighlightPositionStore;
+import com.example.customcalendarlibrary.Util.SelectedDate;
 import com.example.customcalendarlibrary.Util.Toaster;
 import com.example.customcalendarlibrary.databinding.DaysGridItemsBinding;
 
@@ -30,10 +31,13 @@ public class DatesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     private Context mContext;
     private DaysGridItemsBinding binding;
+    private DatesGridViewHolder viewHolder;
 
     private int monthYearPosition;
     private int startPositionForDayOfMonth;
     private static DateCommunicatorWithCalendar communicatorWithCalendar;
+
+    private static int minMonthYearPosition = -1, minDayPosition = -1;
 
     private static int startMonthPos = -1, endMonthPos = -1, startDatePos = -1, endDatePos = -1;
 
@@ -64,11 +68,15 @@ public class DatesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         private int monthYearPosition;
 
+        private SelectedDate selectedDate;
+
         DatesGridViewHolder(@NonNull DaysGridItemsBinding binding, int monthYearPosition) {
 
             super(binding.getRoot());
             this.binding = binding;
             this.monthYearPosition = monthYearPosition;
+
+            selectedDate = new SelectedDate(-1, -1, -1, -1);
 
             setEvents();
         }
@@ -125,6 +133,12 @@ public class DatesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     DateHighlightPositionStore.startMonth = DateHighlightPositionStore.endMonth = DateHighlightPositionStore.startDate = DateHighlightPositionStore.endDate = CalendarUtil.INITIAL_VALUE;
                 }
             }
+            selectedDate.setSelectedDate(startDatePos, endDatePos, startMonthPos, endMonthPos);
+        }
+
+        SelectedDate getSelectedDate() {
+
+            return selectedDate;
         }
 
         private void setBackground(int startMonthPos, int startDatePos) {
@@ -164,6 +178,24 @@ public class DatesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
             }
         }
+
+        void disableDates(int minMonthYearPosition, int day) {
+
+            /*if (minMonthYearPosition > monthYearPosition) {
+
+                binding.dayText.setTextColor(ContextCompat.getColor(binding.getRoot().getContext(), R.color.disabled_dates_text_color));
+                binding.dayText.setClickable(false);
+            } else */
+            int monthPos = monthYearPosition % 12, yearPos = monthYearPosition / 12;
+            if (yearPos == 0 && monthPos == minMonthYearPosition % 12) {
+
+                String dayText = binding.dayText.getText().toString();
+                if (!dayText.equalsIgnoreCase(CalendarUtil.BLANK_TEXT) && day > Integer.valueOf(dayText)) {
+                    binding.dayText.setTextColor(ContextCompat.getColor(binding.getRoot().getContext(), R.color.disabled_dates_text_color));
+                    binding.dayText.setClickable(false);
+                }
+            }
+        }
     }
 
     @NonNull
@@ -185,18 +217,29 @@ public class DatesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
-        DatesGridViewHolder viewHolder = (DatesGridViewHolder) holder;
+        viewHolder = (DatesGridViewHolder) holder;
         if (position >= startPositionForDayOfMonth) {
             viewHolder.setContent(String.valueOf(dates.get(position - startPositionForDayOfMonth)));
         } else {
             viewHolder.setContent(CalendarUtil.BLANK_TEXT);
         }
-
+        viewHolder.disableDates(minMonthYearPosition, minDayPosition);
         viewHolder.highlight();
     }
 
     @Override
     public int getItemCount() {
         return dates.size() + startPositionForDayOfMonth;
+    }
+
+    void disableDates(int minMonthYearPosition, int minDayPosition) {
+
+        DatesGridAdapter.minMonthYearPosition = minMonthYearPosition;
+        DatesGridAdapter.minDayPosition = minDayPosition;
+    }
+
+    SelectedDate getSelectedDate() {
+
+        return viewHolder.getSelectedDate();
     }
 }

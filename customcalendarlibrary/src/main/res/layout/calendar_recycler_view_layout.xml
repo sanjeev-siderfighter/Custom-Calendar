@@ -35,7 +35,7 @@
                 android:id="@+id/year_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="@string/year_hit"
+                android:hint="@string/year_hint"
                 android:textColor="@color/month_text_color"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@id/month_text"

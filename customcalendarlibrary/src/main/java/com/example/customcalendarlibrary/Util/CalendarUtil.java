@@ -1,5 +1,11 @@
 package com.example.customcalendarlibrary.Util;
 
+import android.util.Log;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 public class CalendarUtil {
 
     public static final int NUMBER_OF_MONTHS = 12;
@@ -27,5 +33,17 @@ public class CalendarUtil {
             default:
                 return -1;
         }
+    }
+
+    public static String dateAddition(int day1, int month1, int year1, int lenDay) {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year1, month1, day1);
+        calendar.add(Calendar.DATE, lenDay);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        String res = dateFormat.format(calendar.getTime());
+        Log.d("tagger", res);
+        return res;
     }
 }

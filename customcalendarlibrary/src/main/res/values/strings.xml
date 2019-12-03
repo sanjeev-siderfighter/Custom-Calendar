@@ -6,5 +6,10 @@
 
     <string name="button_text">Done</string>
     <string name="month_hint">mm</string>
-    <string name="year_hit">YYYY</string>
+    <string name="year_hint">YYYY</string>
+
+    <string name="wrong_month_input">The value of the month must be between 0 and 11.</string>
+    <string name="wrong_days_input">The value of days does not correspond to the month and year.</string>
+
+    <string name="min_date_error">Your minimum year is less than your start year</string>
 </resources>

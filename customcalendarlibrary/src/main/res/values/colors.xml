@@ -5,4 +5,6 @@
     <color name="month_text_color">#F3F306</color>
     <color name="gradient_start_color">@color/month_text_color</color>
     <color name="gradient_end_color">@color/year_text_color</color>
+
+    <color name="disabled_dates_text_color">#20F08A6A</color>
 </resources>
