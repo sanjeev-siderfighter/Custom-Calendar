@@ -25,6 +25,7 @@ import com.example.customcalendarlibrary.databinding.CustomCalendarHomeLayoutBin
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -112,14 +113,25 @@ public class CustomCalendar extends View {
         startMonth = months.get(selectedDate.getSelectedStartMonthPos() % 12).getValue() + 1;
         startYear = Integer.valueOf(selectedDate.getYearList().get(selectedDate.getSelectedStartMonthPos() / 12));
 
+        GregorianCalendar gregorianCalendar = new GregorianCalendar(startYear, startMonth - 1, 1);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE", Locale.US);
+        int startFirstPos = CalendarUtil.dayPosition(dateFormat.format(gregorianCalendar.getTimeInMillis()));
+
+        startDay = startDay + 1 - startFirstPos;
+
         if (selectedDate.getSelectedEndMonthPos() != -1) {
             endDay = selectedDate.getSelectedEndDay();
-            endMonth = months.get(selectedDate.getSelectedStartMonthPos() % 12).getValue() + 1;
-            endYear = Integer.valueOf(selectedDate.getYearList().get(selectedDate.getSelectedStartMonthPos() / 12));
+            endMonth = months.get(selectedDate.getSelectedEndMonthPos() % 12).getValue() + 1;
+            endYear = Integer.valueOf(selectedDate.getYearList().get(selectedDate.getSelectedEndMonthPos() / 12));
+
+            gregorianCalendar.set(endYear, endMonth - 1, 1);
+            int endFirstPos = CalendarUtil.dayPosition(dateFormat.format(gregorianCalendar.getTimeInMillis()));
+
+            endDay = endDay + 1 - endFirstPos;
         }
 
         String res = startDay + "-" + startMonth + "-" + startYear;
-        if (endDay != -1) {
+        if (endDay > 0) {
             res += "||" + endDay + "-" + endMonth + "-" + endYear;
         }
 

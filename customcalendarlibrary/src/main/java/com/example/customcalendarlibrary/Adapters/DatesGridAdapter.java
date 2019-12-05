@@ -41,6 +41,8 @@ public class DatesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     private static int startMonthPos = -1, endMonthPos = -1, startDatePos = -1, endDatePos = -1;
 
+    private static SelectedDate selectedDate = new SelectedDate(-1, -1, -1, -1, null);
+
     static {
         communicatorWithCalendar = null;
     }
@@ -68,15 +70,12 @@ public class DatesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         private int monthYearPosition;
 
-        private SelectedDate selectedDate;
 
         DatesGridViewHolder(@NonNull DaysGridItemsBinding binding, int monthYearPosition) {
 
             super(binding.getRoot());
             this.binding = binding;
             this.monthYearPosition = monthYearPosition;
-
-            selectedDate = new SelectedDate(-1, -1, -1, -1, null);
 
             setEvents();
         }
@@ -94,7 +93,7 @@ public class DatesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         @Override
         public void onClick(View view) {
 
-            if (view == binding.dayText && !binding.dayText.getText().toString().equalsIgnoreCase(CalendarUtil.BLANK_TEXT)) {
+            if (view.hashCode() == binding.dayText.hashCode() && !binding.dayText.getText().toString().equalsIgnoreCase(CalendarUtil.BLANK_TEXT)) {
 
                 if (DateHighlightPositionStore.startMonth == CalendarUtil.INITIAL_VALUE) {
                     DateHighlightPositionStore.startMonth = monthYearPosition;
@@ -132,8 +131,8 @@ public class DatesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     setBackground(startMonthPos, endMonthPos, startDatePos, endDatePos);
                     DateHighlightPositionStore.startMonth = DateHighlightPositionStore.endMonth = DateHighlightPositionStore.startDate = DateHighlightPositionStore.endDate = CalendarUtil.INITIAL_VALUE;
                 }
+                selectedDate.setSelectedDate(startDatePos, endDatePos, startMonthPos, endMonthPos);
             }
-            selectedDate.setSelectedDate(startDatePos - 1 - startPositionForDayOfMonth, endDatePos - 1 - startPositionForDayOfMonth, startMonthPos, endMonthPos);
         }
 
         SelectedDate getSelectedDate(List<String> yearList) {
