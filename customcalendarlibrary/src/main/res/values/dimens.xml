@@ -9,4 +9,5 @@
     <dimen name="calendar_month_padding">10dp</dimen>
     <dimen name="background_padding">8dp</dimen>
     <dimen name="cardview_radius">10dp</dimen>
+    <dimen name="selected_dates_margin">5dp</dimen>
 </resources>

@@ -3,56 +3,133 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/grid_margin"
-        android:layout_marginLeft="@dimen/grid_margin">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guide_left"
-            android:layout_width="wrap_content"
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/toolbar_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent=".05" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/toolbar_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent=".95" />
+
+                <TextView
+                    android:id="@+id/from_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/selected_dates_margin"
+                    android:paddingEnd="@dimen/selected_dates_margin"
+                    android:text="@string/from"
+                    app:layout_constraintStart_toStartOf="@id/toolbar_left"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/selected_from_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/default_date"
+                    app:layout_constraintBottom_toBottomOf="@id/from_text"
+                    app:layout_constraintStart_toEndOf="@id/from_text"
+                    app:layout_constraintTop_toTopOf="@id/from_text" />
+
+                <TextView
+                    android:id="@+id/to_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="@dimen/selected_dates_margin"
+                    android:paddingStart="@dimen/selected_dates_margin"
+                    android:text="@string/to"
+                    app:layout_constraintBottom_toBottomOf="@id/from_text"
+                    app:layout_constraintEnd_toStartOf="@id/selected_to_text"
+                    app:layout_constraintTop_toTopOf="@id/from_text" />
+
+                <TextView
+                    android:id="@+id/selected_to_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/default_date"
+                    app:layout_constraintBottom_toBottomOf="@id/to_text"
+                    app:layout_constraintEnd_toEndOf="@id/toolbar_right"
+                    app:layout_constraintTop_toTopOf="@id/to_text" />
+
+                <GridView
+                    android:id="@+id/grid_view_for_days"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:numColumns="7"
+                    android:paddingTop="@dimen/days_grid_top_padding"
+                    android:paddingBottom="@dimen/days_grid_bottom_padding"
+                    app:layout_constraintEnd_toEndOf="@id/toolbar_right"
+                    app:layout_constraintStart_toStartOf="@id/toolbar_left"
+                    app:layout_constraintTop_toBottomOf="@id/from_text" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.appcompat.widget.Toolbar>
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent=".05" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guide_right"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent=".95" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_left"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".05" />
 
-        <GridView
-            android:id="@+id/grid_view_for_days"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:numColumns="7"
-            android:paddingTop="@dimen/days_grid_top_padding"
-            android:paddingBottom="@dimen/days_grid_bottom_padding"
-            app:layout_constraintBottom_toTopOf="@id/recycler_view_for_dates"
-            app:layout_constraintEnd_toEndOf="@id/guide_right"
-            app:layout_constraintStart_toStartOf="@id/guide_left"
-            app:layout_constraintTop_toTopOf="parent" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_right"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".95" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_for_dates"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="@dimen/calendar_recycler_view_margin"
-            app:layout_constraintBottom_toTopOf="@id/button_save"
-            app:layout_constraintEnd_toEndOf="@id/grid_view_for_days"
-            app:layout_constraintStart_toStartOf="@id/grid_view_for_days"
-            app:layout_constraintTop_toBottomOf="@id/grid_view_for_days" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_for_dates"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@id/button_save"
+                app:layout_constraintEnd_toEndOf="@id/guide_right"
+                app:layout_constraintStart_toStartOf="@id/guide_left"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/button_save"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/button_text"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/grid_view_for_days"
-            app:layout_constraintStart_toStartOf="@id/grid_view_for_days" />
+            <Button
+                android:id="@+id/button_save"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/button_text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/recycler_view_for_dates"
+                app:layout_constraintStart_toStartOf="@id/recycler_view_for_dates" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
