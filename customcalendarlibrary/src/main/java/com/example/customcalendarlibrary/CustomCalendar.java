@@ -2,6 +2,7 @@ package com.example.customcalendarlibrary;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -10,9 +11,10 @@ import android.widget.GridView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;z
 
 import com.example.customcalendarlibrary.Adapters.CalendarRecyclerAdapter;
 import com.example.customcalendarlibrary.Adapters.DaysGridAdapter;
@@ -23,6 +25,7 @@ import com.example.customcalendarlibrary.Util.Toaster;
 import com.example.customcalendarlibrary.databinding.CustomCalendarHomeLayoutBinding;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -49,6 +52,7 @@ public class CustomCalendar extends View {
         super(context);
         mContext = context;
         mActivity = (Activity) mContext;
+        years = new ArrayList<>();
         listener = (CustomCalendarSelectedDatesListener) context;
         initView(null);
     }
@@ -57,6 +61,7 @@ public class CustomCalendar extends View {
         super(context, attrs);
         mContext = context;
         mActivity = (Activity) mContext;
+        years = new ArrayList<>();
         listener = (CustomCalendarSelectedDatesListener) context;
         initView(attrs);
     }
@@ -65,6 +70,7 @@ public class CustomCalendar extends View {
         super(context, attrs, defStyleAttr);
         mContext = context;
         mActivity = (Activity) mContext;
+        years = new ArrayList<>();
         listener = (CustomCalendarSelectedDatesListener) context;
         initView(attrs);
     }
@@ -74,6 +80,7 @@ public class CustomCalendar extends View {
         super(context, attrs, defStyleAttr, defStyleRes);
         mContext = context;
         mActivity = (Activity) mContext;
+        years = new ArrayList<>();
         listener = (CustomCalendarSelectedDatesListener) context;
         initView(attrs);
     }
@@ -83,7 +90,48 @@ public class CustomCalendar extends View {
 
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+        int startYear, startMonth, startDay;
+
         if (inflater != null) {
+
+            if (attrs != null) {
+
+                /*Calendar calendar = Calendar.getInstance();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy", Locale.US);
+                String defaultYear = dateFormat.format(calendar.getTime()); // returns the current year...*/
+
+                String today = getTodaysDate(); // dd-MM-yyyy
+                String defaultDay = today.substring(0, 2);
+                String defaultMonth = today.substring(3, 5);
+                String defaultYear = today.substring(6);
+
+                TypedArray typedArray = mContext.obtainStyledAttributes(attrs, R.styleable.CustomCalendar);
+
+                // if startYear = 2019, endYear = 2025, then months from Jan 2019 to Dec 2024 will appear...
+                startYear = typedArray.getInt(R.styleable.CustomCalendar_startYear, Integer.valueOf(defaultYear));
+                startMonth = typedArray.getInt(R.styleable.CustomCalendar_startDay, Integer.valueOf(defaultMonth));
+                startDay = typedArray.getInt(R.styleable.CustomCalendar_startDay, Integer.valueOf(defaultDay));
+                int endYear = typedArray.getInt(R.styleable.CustomCalendar_endYear, startYear + 20);
+                int toolbarDrawable = typedArray.getInt(R.styleable.CustomCalendar_toolbarDrawable, R.drawable.default_gradient_drawable);
+
+                setDefaultValues(startYear, endYear, toolbarDrawable);
+
+                typedArray.recycle();
+            } else {
+
+                String today = getTodaysDate(); // dd-MM-yyyy
+                startDay = Integer.parseInt(today.substring(0, 2));
+                startMonth = Integer.parseInt(today.substring(3, 5));
+                startYear = Integer.parseInt(today.substring(6));
+
+                /*Calendar calendar = Calendar.getInstance();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+                String dateToday = dateFormat.format(calendar.getTime()); // returns the current year...
+                int startYear = Integer.valueOf(defaultYear);
+                int endYear = Integer.valueOf(defaultYear) + 20;
+
+                setDefaultValues(startYear, endYear, R.drawable.default_gradient_drawable);*/
+            }
 
             binding = DataBindingUtil.setContentView(mActivity, R.layout.custom_calendar_home_layout);
             binding.buttonSave.setOnClickListener(new OnClickListener() {
@@ -95,9 +143,20 @@ public class CustomCalendar extends View {
             });
             setupGridView();
             setupRecyclerView();
+            setMinDate(startDay, startMonth, startYear);
         } else {
 
             Toaster.generateShortToast(mContext, getResources().getString(R.string.layout_unavailable));
+        }
+    }
+
+    private void setDefaultValues(int startYear, int endYear, int toolbarDrawable) {
+
+//        binding.mainView.setBackground(ContextCompat.getDrawable(mContext, toolbarDrawable));
+//        binding.appBar.setBackgroundResource(toolbarDrawable);
+        while (startYear != endYear) {
+            years.add(String.valueOf(startYear));
+            startYear++;
         }
     }
 
@@ -154,7 +213,7 @@ public class CustomCalendar extends View {
                 CalendarDates.JULY, CalendarDates.AUGUST, CalendarDates.SEPTEMBER,
                 CalendarDates.OCTOBER, CalendarDates.NOVEMBER, CalendarDates.DECEMBER);
 
-        years = Arrays.asList("2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019");
+//        years = Arrays.asList("2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019");
 
         calendarRecyclerView.setHasFixedSize(false);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext);
@@ -166,7 +225,7 @@ public class CustomCalendar extends View {
 //        calendarRecyclerView.scrollToPosition(49);
     }
 
-    public String getTodaysDate() {
+    public String getTodaysDate() { // return dd-mm-yyyy format
 
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);

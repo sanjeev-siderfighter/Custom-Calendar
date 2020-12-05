@@ -64,7 +64,7 @@ public class DatesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    private class DatesGridViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class DatesGridViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private DaysGridItemsBinding binding;
 
@@ -88,6 +88,16 @@ public class DatesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         private void setEvents() {
 
             binding.dayText.setOnClickListener(this);
+        }
+
+        void setSelectedDate(int day, int monthYearPosition) {
+
+            if (this.monthYearPosition == monthYearPosition) {
+                if (getAdapterPosition() == day - startPositionForDayOfMonth)
+                {
+                    binding.dayText.setBackgroundColor(ContextCompat.getColor(binding.getRoot().getContext(), R.color.highlight_color));
+                }
+            }
         }
 
         @Override
