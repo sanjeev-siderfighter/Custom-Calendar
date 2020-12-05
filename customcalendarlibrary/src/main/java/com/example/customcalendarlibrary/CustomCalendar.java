@@ -14,7 +14,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;z
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.customcalendarlibrary.Adapters.CalendarRecyclerAdapter;
 import com.example.customcalendarlibrary.Adapters.DaysGridAdapter;
